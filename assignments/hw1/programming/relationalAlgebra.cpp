@@ -248,7 +248,30 @@ static relation<outputArity> projection (relation<inputArity> inputRelation, int
     auto outputRelation = relation<outputArity>();
     
     // TODO: Task 2 implement this function
+    bool columnToKeep[inputArity] = {false};
 
+    for (int i = 0; i < outputArity; i++) {
+        columnToKeep[indicesOfAttributesToKeepArray[i]] = true;
+    }
+    std::set<array<int, arity>> original = inputRelation.getDataBuffer();
+    std::set<array<int, arity>> projection;
+    // Loop through set
+    for (const auto& line : original ) {
+        std::array<int, outputArity> arr;
+        // Loop through array
+        int insert = 0;
+        for (int col = 0; col < inputArity; col++) {
+            //If columnToKeep true add to new array
+            if (columnToKeep[col] == true) {
+                arr[insert] = line[col];
+                insert++;
+            }
+        }
+        // Add new array to new set
+        projection.insert(arr);
+    }
+
+    outputRelation.setDataBuffer(projection);
     return outputRelation;
 }
 
