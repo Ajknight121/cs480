@@ -201,6 +201,10 @@ static relation<arity> selection (relation<arity> inputRelation, int attributeIn
     auto outputRelation = relation<arity>();
     
     // TODO: Task 1 implement this function
+    // start new set
+    // Loop through each line in inputSet
+
+        // if inputSet[attributeIndex] OPERATION operand add to new set
 
     return outputRelation;
 }
