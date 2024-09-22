@@ -371,6 +371,35 @@ static relation<inputArity1 + inputArity2> equiJoinQuadratic (relation<inputArit
     auto outputRelation = relation<inputArity1 + inputArity2>();
     
     // TODO: Task 4 implement this function
+    size_t outputArity = inputArity1 + inputArity2;
+    std::set<array<int, inputArity1>> originalLeft = inputRelation1.getDataBuffer();
+    std::set<array<int, inputArity2>> originalRight = inputRelation2.getDataBuffer();
+    std::set<array<int, outputArity>> equiJoin;
+
+
+    bool columnToKeepLeft[inputArity] = {false};
+    bool columnToKeepRight[inputArity] = {false};
+
+    for (int i = 0; i < outputArity; i++) {
+        columnToKeepLeft[relation1JoinColumnIndexArray[i]] = true;
+    }
+    for (int i = 0; i < outputArity; i++) {
+        columnToKeepRight[relation2JoinColumnIndexArray[i]] = true;
+    }
+
+    //Loop through all line of left table
+    for (const auto& leftLine : originalLeft ) {
+        // Join searched columns
+        std::array<int, joinColumnIndexLength> search;
+        
+        for (size_t i = 0; i < )
+        // find matching value in right table
+        originalRight.find(leftLine[])
+        // check if there is another of the same value
+        // If so set that line as current, remove previous
+        // else leave curr
+        
+    }
 
     return outputRelation;
 }
