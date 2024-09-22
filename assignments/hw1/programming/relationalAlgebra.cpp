@@ -202,10 +202,30 @@ static relation<arity> selection (relation<arity> inputRelation, int attributeIn
     
     // TODO: Task 1 implement this function
     // start new set
+    std::set<array<int, arity>> original = inputRelation.getDataBuffer();
+    std::set<array<int, arity>> selection;
+
+    for (const auto& line : original ) {
     // Loop through each line in inputSet
 
-        // if inputSet[attributeIndex] OPERATION operand add to new set
-
+        // if inputSet[attributeIndex] OPERATION operand add line to new set
+        if (operation == EQUAL) {
+            if (line[attributeIndex] == operand) {
+                selection.insert(line);
+            }
+        }
+        if (operation == LESSTHAN) {
+            if (line[attributeIndex] < operand) {
+                selection.insert(line);
+            }
+        }
+        if (operation == GREATERTHAN) {
+            if (line[attributeIndex] > operand) {
+                selection.insert(line);
+            }
+        }
+    }
+    outputRelation.setDataBuffer(selection);
     return outputRelation;
 }
 
@@ -257,6 +277,7 @@ static relation<outputArity> projection (relation<inputArity> inputRelation, int
     for (int i = 0; i < outputArity; i++) {
         columnToKeep[indicesOfAttributesToKeepArray[i]] = true;
     }
+
     std::set<array<int, arity>> original = inputRelation.getDataBuffer();
     std::set<array<int, arity>> projection;
     // Loop through set
