@@ -21,6 +21,7 @@ You have to implement the four Relational algebra operators.
 - Each function is worth 27 points, totalling 108 points. There is no explicit bonus points here, you get all four write, you get 8 bonus points.
 - To compile and run the program [programming/relationalAlgebra.cpp](programming/relationalAlgebra.cpp) file:
 ```shell
+->`g++ -std=c++14 relationalAlgebra.cpp -o solution`
 g++ relationalAlgebra.cpp -o solution
 ./solution
 ```

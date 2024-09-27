@@ -278,8 +278,8 @@ static relation<outputArity> projection (relation<inputArity> inputRelation, int
         columnToKeep[indicesOfAttributesToKeepArray[i]] = true;
     }
 
-    std::set<array<int, arity>> original = inputRelation.getDataBuffer();
-    std::set<array<int, arity>> projection;
+    std::set<array<int, inputArity>> original = inputRelation.getDataBuffer();
+    std::set<array<int, outputArity>> projection;
     // Loop through set
     for (const auto& line : original ) {
         std::array<int, outputArity> arr;
