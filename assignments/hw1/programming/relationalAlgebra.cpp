@@ -204,28 +204,32 @@ static relation<arity> selection (relation<arity> inputRelation, int attributeIn
     // start new set
     std::set<array<int, arity>> original = inputRelation.getDataBuffer();
     std::set<array<int, arity>> selection;
-
+    int count = 0;
     for (const auto& line : original ) {
     // Loop through each line in inputSet
 
         // if inputSet[attributeIndex] OPERATION operand add line to new set
         if (operation == EQUAL) {
             if (line[attributeIndex] == operand) {
+                count++;
                 selection.insert(line);
             }
         }
         if (operation == LESSTHAN) {
             if (line[attributeIndex] < operand) {
+                count++;
                 selection.insert(line);
             }
         }
         if (operation == GREATERTHAN) {
             if (line[attributeIndex] > operand) {
+                count++;
                 selection.insert(line);
             }
         }
     }
     outputRelation.setDataBuffer(selection);
+    outputRelation.setTupleCount(count);
     return outputRelation;
 }
 
