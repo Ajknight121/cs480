@@ -333,7 +333,25 @@ static relation<inputArity1 + inputArity2> crossProduct (relation<inputArity1> i
     auto outputRelation = relation<inputArity1 + inputArity2>();
     
     // TODO: Task 3 implement this function
-
+    std::set<array<int, inputArity1>> original1 = inputRelation1.getDataBuffer();
+    std::set<array<int, inputArity2>> original2 = inputRelation2.getDataBuffer();
+    std::set<array<int, inputArity1 + inputArity2>> crossProduct;
+    int count = 0;
+    for (const auto& line1 : original1) {
+        for (const auto& line2 : original2) {
+            std::array<int, inputArity1 + inputArity2> fullLine;
+            for (int col = 0; col < inputArity1; col++) {
+                fullLine[col] = line1[col];
+            }
+            for (int col2 = 0; col2 < inputArity2; col2++) {
+                fullLine[inputArity1 + col2] = line2[col2];
+            }
+            count++;
+            crossProduct.insert(fullLine);
+        }
+    }
+    outputRelation.setDataBuffer(crossProduct);
+    outputRelation.setTupleCount(count);
     return outputRelation;
 }
 
