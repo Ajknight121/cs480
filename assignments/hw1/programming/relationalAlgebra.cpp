@@ -392,37 +392,38 @@ static relation<inputArity1 + inputArity2> equiJoinQuadratic (relation<inputArit
 
     auto outputRelation = relation<inputArity1 + inputArity2>();
     
+// #if 0    // Use this with 0 for quick commenting out
+// #endif  
+
     // TODO: Task 4 implement this function
-    size_t outputArity = inputArity1 + inputArity2;
-    std::set<array<int, inputArity1>> originalLeft = inputRelation1.getDataBuffer();
-    std::set<array<int, inputArity2>> originalRight = inputRelation2.getDataBuffer();
-    std::set<array<int, outputArity>> equiJoin;
+    std::set<array<int, inputArity1>> original1 = inputRelation1.getDataBuffer();
+    std::set<array<int, inputArity2>> original2 = inputRelation2.getDataBuffer();
+    std::set<array<int, inputArity1 + inputArity2>> equiJoinQuadratic;
+    int count = 0;
 
-
-    bool columnToKeepLeft[inputArity] = {false};
-    bool columnToKeepRight[inputArity] = {false};
-
-    for (int i = 0; i < outputArity; i++) {
-        columnToKeepLeft[relation1JoinColumnIndexArray[i]] = true;
+    for (const auto& line1 : original1) {
+        for (const auto& line2 : original2) {
+            std::array<int, inputArity1 + inputArity2> fullLine;
+            bool joinable = true;
+            for (int join = 0; join < joinColumnIndexLength; join++) {
+                if (line1[relation1JoinColumnIndexArray[join]] != line2[relation2JoinColumnIndexArray[join]]) {
+                    joinable = false;
+                }
+            }
+            if (joinable) {
+                for (int col = 0; col < inputArity1; col++) {
+                    fullLine[col] = line1[col];
+                }
+                for (int col2 = 0; col2 < inputArity2; col2++) {
+                    fullLine[inputArity1 + col2] = line2[col2];
+                }
+                count++;
+                equiJoinQuadratic.insert(fullLine);
+            }
+        }
     }
-    for (int i = 0; i < outputArity; i++) {
-        columnToKeepRight[relation2JoinColumnIndexArray[i]] = true;
-    }
-
-    //Loop through all line of left table
-    for (const auto& leftLine : originalLeft ) {
-        // Join searched columns
-        std::array<int, joinColumnIndexLength> search;
-        
-        for (size_t i = 0; i < )
-        // find matching value in right table
-        originalRight.find(leftLine[])
-        // check if there is another of the same value
-        // If so set that line as current, remove previous
-        // else leave curr
-        
-    }
-
+    outputRelation.setDataBuffer(equiJoinQuadratic);
+    outputRelation.setTupleCount(count);
     return outputRelation;
 }
 
