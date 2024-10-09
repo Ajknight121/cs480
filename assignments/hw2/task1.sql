@@ -90,12 +90,30 @@ INSERT INTO Publication_Keywords (pub_id, keyword) VALUES
 -- Task 1.1 Find the venue that has the highest number of publications associated with the keyword 'DB'.
 -- Ensure that the venue name and the count of such publications are returned.
 -- Output column titles: venue_name, publication_count
+SELECT * from venue, publications,keywords;
 
+SELECT venue_name, COUNT(venue_id) as publication_count
+FROM Publications NATURAL JOIN publication_keywords NATURAL JOIN Venue 
+WHERE keyword="DB"
+GROUP BY venue_name
+LIMIT 1;
+-- TODO, is this limit guarenteed to return the highest number if not where do I add ORDER BY
 
 -- Task 1.2 Find the total authors for each venue which has a type 'Conference' in descending order of total authors
 -- Ensure that the venue name and the total authors of such venues are returned.
 -- Output column titles: venue_name, total_authors
-
+SELECT venue_name, SUM(total_authors)
+FROM Publications NATURAL JOIN venue 
+WHERE venue_type="Conference"
+GROUP BY venue_name
 
 -- Task 1.3 Find the third most used keyword.
 -- Output column titles: keyword
+
+SELECT COUNT(*) as keyword_count, keyword
+FROM publication_keywords NATURAL JOIN publications
+GROUP BY keyword
+ORDER BY keyword_count DESC;
+
+--TODO, Grab only the 3rd most used
+-- ALSO How do you select the top whatever of something, how would it be done per section
