@@ -98,11 +98,38 @@ VALUES
 
 -- Task 2.1 Find the total population of the cities of State Illinois
 -- Output column titles: total_population
+SELECT SUM(task2.city.population) as total_population
+FROM task2.state
+INNER JOIN task2.city ON task2.state.state_id=task2.city.state_id
+WHERE task2.state.name="Illinois"
+
+
 
 
 -- Task 2.2 Find the state name and total awards which has the newest formed city
 -- Output column titles: state_name, total_awards
-
+SELECT state.name as state_name, COUNT(*) as total_awards
+FROM state INNER JOIN city ON city.state_id=state.state_id JOIN state_award
+WHERE city.established_date = (SELECT MAX(city.established_date) FROM city)
+GROUP BY state.name
 
 -- Task 2.3 Find the city names and city population of the state with most awards
 -- Output column titles: city_name, city_population
+
+-- -- find state with most awards
+-- SELECT state.name
+-- FROM state INNER JOIN state_award ON state.state_id=state_award.state_id
+-- GROUP BY state.name
+-- ORDER BY COUNT(*) DESC
+-- LIMIT 1
+
+
+SELECT city.name as city_name, city.population as city_population
+FROM city INNER JOIN state ON city.state_id=state.state_id
+WHERE state.name = (
+    SELECT state.name
+    FROM state INNER JOIN state_award ON state.state_id=state_award.state_id
+    GROUP BY state.name
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+)
