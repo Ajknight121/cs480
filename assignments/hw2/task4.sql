@@ -154,16 +154,22 @@ WHERE employee_id = SOME (
 -- Task 4.4 Find names and salaries of employees who earned a salary higher than the average salary for the year 2021.
 -- Output column titles: name, salary
 
-SELECT DISTINCT name, salary
+SELECT name, salary
 FROM Employee NATURAL JOIN EmployeeSalary
 WHERE salary > (
     SELECT AVG(salary)
     FROM EmployeeSalary
-)
+    WHERE year = 2021
+) AND year = 2021;
 
 -- Task 4.5 Find the course that has collected the highest total enrollment fee.
 -- Output column titles: course_id, total_fees
 
+SELECT course_id, SUM(enrollment_fee) as total_fees
+FROM Course NATURAL JOIN Enrollment
+GROUP BY course_id
+ORDER BY total_fees DESC
+limit 1;
 
 -- Task 4.6 Using a recursive common table expression (CTE) to find the hierarchical structure of employees and their chairs (referred to as chair_id).
 -- Defining a recursive CTE named EmployeeHierarchy, allowing SQL to perform iterative operations.
@@ -174,3 +180,4 @@ WHERE salary > (
    -- (d) For each recursive step, the level is incremented by 1, so that employees at a lower level are one step below their chairs.
    -- (e) The final query selects all records from the recursive CTE EmployeeHierarchy, which now contains the complete hierarchy, with each employee's level in the organization.
 -- Output column titles: employee_id, name, chair_id, level
+
