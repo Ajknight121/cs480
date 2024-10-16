@@ -151,7 +151,7 @@ WHERE employee_id = SOME (
     WHERE salary > 80000 AND year = 2020
 );
 
--- Task 4.4 Finding Employees with Salaries Above the Average salary
+-- Task 4.4 Find names and salaries of employees who earned a salary higher than the average salary for the year 2021.
 -- Output column titles: name, salary
 
 SELECT DISTINCT name, salary

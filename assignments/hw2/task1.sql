@@ -107,7 +107,7 @@ WHERE venue_type="Conference"
 GROUP BY venue_name
 ORDER BY total_authors DESC;
 
--- Task 1.3 Find the third most used keyword.
+-- Task 1.3 Find the third most used keyword. If multiple keywords have the same number of occurrences, sort the list by the keyword in alphabetical order to break the tie. 
 -- Output column titles: keyword
 
 SELECT keyword

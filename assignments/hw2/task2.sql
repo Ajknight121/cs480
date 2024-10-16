@@ -113,7 +113,8 @@ FROM State INNER JOIN City ON City.state_id=State.state_id INNER JOIN State_Awar
 WHERE City.established_date = (SELECT MAX(City.established_date) FROM City)
 GROUP BY State.name;
 
--- Task 2.3 Find the city names and city population of the state with most awards
+-- Task 2.3 Find the city names and city population of the state with most awards. 
+-- If multiple states have the most awards, select the state whose name comes first alphabetically. Sort the resulting cities by city names in ascending order.
 -- Output column titles: city_name, city_population
 
 -- -- find state with most awards
