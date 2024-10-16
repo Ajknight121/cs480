@@ -123,18 +123,43 @@ INSERT INTO Enrollment (course_id, enrollment_No, enrollment_date, enrollment_fe
 -- Task 4.1 Retrieve the maximum, minimum, and average salary for each department for the year 2021.
 -- Output column titles: department, MaxSalary, MinSalary, AvgSalary
 
+SELECT department, MAX(salary) as MaxSalary, MIN(salary) as MinSalary, AVG(salary) as AvgSalary
+FROM Employee NATURAL JOIN EmployeeSalary
+WHERE year = 2021
+GROUP BY department;
 
 -- Task 4.2 Calculate the average enrollment fee for each course type (Theory, System, Application).
 -- Output column titles: type, AvgFee
 
+SELECT type, AVG(enrollment_fee) as AvgFee
+FROM Course NATURAL JOIN Enrollment
+GROUP BY type;
 
 -- Task 4.3 Find all courses taught by instructors who have a salary greater than 80,000 in 2020.
 -- Output column titles: course_id, type, name
 
+-- -- find valid insturctors
+-- SELECT name, employee_id
+-- FROM Employee NATURAL JOIN EmployeeSalary
+-- WHERE salary > 80000 AND year = 2020;
+
+SELECT course_id, type, name
+FROM Course NATURAL JOIN Employee
+WHERE employee_id = SOME (
+    SELECT employee_id
+    FROM Employee NATURAL JOIN EmployeeSalary
+    WHERE salary > 80000 AND year = 2020
+);
 
 -- Task 4.4 Finding Employees with Salaries Above the Average salary
 -- Output column titles: name, salary
 
+SELECT DISTINCT name, salary
+FROM Employee NATURAL JOIN EmployeeSalary
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM EmployeeSalary
+)
 
 -- Task 4.5 Find the course that has collected the highest total enrollment fee.
 -- Output column titles: course_id, total_fees

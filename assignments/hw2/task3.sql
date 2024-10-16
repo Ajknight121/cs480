@@ -78,10 +78,39 @@ INSERT INTO Evaluation (evaluation_id, system_id, evaluation_date, rating, comme
 -- Task 3.1 Find the name, rating, and comments for the oldest database system of type "NoSQL"
 -- Output column titles: database_name, database_rating, database_comment
 
+-- --find oldest ds
+-- SELECT DatabaseSystem.system_id
+-- FROM DatabaseSystem NATURAL JOIN DatabaseType
+-- WHERE DatabaseType.type_name="NoSQL"
+-- ORDER BY DatabaseSystem.release_date ASC
+-- -- LIMIT 1
+
+
+
+SELECT system_name as database_name, rating as database_rating, comments as database_comment 
+FROM DatabaseSystem NATURAL JOIN Evaluation
+WHERE DatabaseSystem.system_id = (
+    SELECT DatabaseSystem.system_id
+    FROM DatabaseSystem NATURAL JOIN DatabaseType
+    WHERE DatabaseType.type_name="NoSQL"
+    ORDER BY DatabaseSystem.release_date ASC
+    LIMIT 1
+);
 
 -- Task 3.2 Find the database type and minimum rating for each type with an minimum rating greater than 4, ordered by minimum rating in descending order
 -- Output column titles: database_type, minimum_rating
 
 
+
+SELECT DatabaseType.type_name as database_type, MIN(rating) as minimum_rating
+FROM DatabaseType NATURAL JOIN DatabaseSystem NATURAL JOIN Evaluation
+GROUP BY DatabaseType.type_name
+HAVING minimum_rating > 4
+ORDER BY minimum_rating DESC;
+
 -- Task 3.3 Find the Relational database names
 -- Output column titles: database_name
+
+SELECT DISTINCT system_name as database_name
+FROM DatabaseSystem NATURAL JOIN DatabaseType
+WHERE type_name = "Relational";

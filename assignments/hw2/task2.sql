@@ -98,38 +98,38 @@ VALUES
 
 -- Task 2.1 Find the total population of the cities of State Illinois
 -- Output column titles: total_population
-SELECT SUM(task2.city.population) as total_population
-FROM task2.state
-INNER JOIN task2.city ON task2.state.state_id=task2.city.state_id
-WHERE task2.state.name="Illinois"
-
-
+SELECT SUM(City.population) as total_population
+FROM State
+INNER JOIN City ON State.state_id=City.state_id
+WHERE State.name="Illinois";
 
 
 -- Task 2.2 Find the state name and total awards which has the newest formed city
 -- Output column titles: state_name, total_awards
-SELECT state.name as state_name, COUNT(*) as total_awards
-FROM state INNER JOIN city ON city.state_id=state.state_id JOIN state_award
-WHERE city.established_date = (SELECT MAX(city.established_date) FROM city)
-GROUP BY state.name
+
+
+SELECT State.name as state_name, COUNT(*) as total_awards
+FROM State INNER JOIN City ON City.state_id=State.state_id INNER JOIN State_Award ON State_Award.state_id=State.state_id
+WHERE City.established_date = (SELECT MAX(City.established_date) FROM City)
+GROUP BY State.name;
 
 -- Task 2.3 Find the city names and city population of the state with most awards
 -- Output column titles: city_name, city_population
 
 -- -- find state with most awards
--- SELECT state.name
--- FROM state INNER JOIN state_award ON state.state_id=state_award.state_id
--- GROUP BY state.name
--- ORDER BY COUNT(*) DESC
--- LIMIT 1
+-- SELECT State.name, COUNT(*)
+-- FROM State INNER JOIN State_Award ON State.state_id=State_Award.state_id
+-- GROUP BY State.name
+-- ORDER BY COUNT(*) DESC, State.name ASC
+-- LIMIT 1;
 
 
-SELECT city.name as city_name, city.population as city_population
-FROM city INNER JOIN state ON city.state_id=state.state_id
-WHERE state.name = (
-    SELECT state.name
-    FROM state INNER JOIN state_award ON state.state_id=state_award.state_id
-    GROUP BY state.name
-    ORDER BY COUNT(*) DESC
+SELECT City.name as city_name, City.population as city_population
+FROM City INNER JOIN State ON City.state_id=State.state_id
+WHERE State.name = (
+    SELECT State.name
+    FROM State INNER JOIN State_Award ON State.state_id=State_Award.state_id
+    GROUP BY State.name
+    ORDER BY COUNT(*) DESC, State.name ASC
     LIMIT 1
-)
+);
