@@ -181,3 +181,14 @@ limit 1;
    -- (e) The final query selects all records from the recursive CTE EmployeeHierarchy, which now contains the complete hierarchy, with each employee's level in the organization.
 -- Output column titles: employee_id, name, chair_id, level
 
+
+WITH RECURSIVE EmployeeHierarchy as (
+    SELECT employee_id, name, chair_id, 1 as level
+    FROM Employee
+    WHERE chair_id IS NULL
+    UNION ALL
+    SELECT employ.employee_id, employ.name, employ.chair_id, mang.level + 1
+    FROM (Employee as employ) INNER JOIN (EmployeeHierarchy as mang) ON employ.chair_id = mang.employee_id
+)
+SELECT *
+FROM EmployeeHierarchy;
